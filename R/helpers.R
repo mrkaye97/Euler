@@ -54,5 +54,33 @@ fibs <- function(n = 10, x1 = 0, x2 = 1) {
   return(fib_mem(n))
 }
 
+#' get_factors
+#' get the factors of a number
+#' @param n the number
+#' @return numeric: the factors
+#' @importFrom purrr keep
+get_factors <- function(n) {
+  1:n %>%
+    keep(function(x) ifelse(n %% x == 0, TRUE, FALSE))
+}
+
+#' is_prime
+#' check if a number is prime
+#' @param n the number
+#' @return boolean: TRUE if prime, FALSE otherwise
+is_prime <- function(n) {
+  if (length(get_factors(n)) == 2) TRUE else FALSE
+}
+
+#' prime_factors
+#' get the prime factors of a number
+#' @param n the number
+#' @return numeric: the prime factors
+#' @importFrom purrr keep
+prime_factors <- function(n) {
+  get_factors(n) %>%
+    keep(function(x) is_prime(x))
+}
+
 
 
