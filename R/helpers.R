@@ -29,3 +29,30 @@ multiples_sum <- function(numbers = c(3,5), max_value = 1000) {
     summarize(x = sum(.data$number)) %>%
     pull(.data$x)
 }
+
+#' fibs
+#' get fibonacci numbers
+#' @param n the index of the fibonacci number ot return (default: 10)
+#' @param x1 the first number in the sequence (default: 0)
+#' @param x2 the second number in the sequence (default: 1)
+#' @return numeric: the nth fibonacci number
+fibs <- function(n = 10, x1 = 0, x2 = 1) {
+  fib_tbl <- c(x1, x2, rep(NA, n))
+
+  fib_mem <- function(n){
+    stopifnot(n > 0)
+
+    if(!is.na(fib_tbl[n])){
+      fib_tbl[n]
+    } else {
+      fib_tbl[n - 1] <<- fib_mem(n - 1)
+      fib_tbl[n - 2] <<- fib_mem(n - 2)
+      fib_tbl[n - 1] + fib_tbl[n - 2]
+    }
+  }
+
+  return(fib_mem(n))
+}
+
+
+

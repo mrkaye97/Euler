@@ -1,2 +1,2 @@
 # euleR
-Tidy solutions to Euler problems
+A Tidy approach to Euler problems. See the vignettes for solutions.
