@@ -14,9 +14,8 @@ multiples_sum <- function(numbers = c(3,5), max_value = 1000) {
           mutate(s = ifelse(.data$number %% .x == 0, .data$number, 0))) %>%
     reduce(left_join, by = 'number') %>%
     rowwise() %>%
-    mutate(rs = sum(c_across(everything()))) %>%
+    filter(any(c_across(-.data$number) == .data$number)) %>%
     ungroup() %>%
-    transmute(x = ifelse(.data$rs == .data$number, 0, .data$number)) %>%
-    summarize(s = sum(.data$x))  %>%
-    pull(.data$s)
+    summarize(x = sum(.data$number)) %>%
+    pull(.data$x)
 }
