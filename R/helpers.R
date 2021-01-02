@@ -61,7 +61,7 @@ fibs <- function(n = 10, x1 = 0, x2 = 1) {
 #' @importFrom purrr keep
 get_factors <- function(n) {
   1:n %>%
-    keep(function(x) ifelse(n %% x == 0, TRUE, FALSE))
+    keep(function(x) n %% x == 0)
 }
 
 #' is_prime
