@@ -2,9 +2,7 @@
 % Please edit documentation in R/solutions.R
 \name{problem_3}
 \alias{problem_3}
-\title{Problem 3
-The prime factors of 13195 are 5, 7, 13 and 29.
-What is the largest prime factor of the number 600851475143 ?}
+\title{Problem 3}
 \usage{
 problem_3()
 }
@@ -12,7 +10,6 @@ problem_3()
 the largest prime factor
 }
 \description{
-Problem 3
 The prime factors of 13195 are 5, 7, 13 and 29.
 What is the largest prime factor of the number 600851475143 ?
 }
