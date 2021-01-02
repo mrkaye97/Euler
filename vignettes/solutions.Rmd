@@ -28,3 +28,7 @@ problem_1()
 problem_2()
 ```
 
+## Problem 3
+```{r}
+problem_3()
+```
