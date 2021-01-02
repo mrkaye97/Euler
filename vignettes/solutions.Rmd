@@ -1,0 +1,34 @@
+---
+title: "Euler Solutions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Euler Solutions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(euleR)
+```
+
+## Problem 1
+```{r}
+problem_1()
+```
+
+## Problem 2
+```{r}
+problem_2()
+```
+
+## Problem 3
+```{r}
+problem_3()
+```
