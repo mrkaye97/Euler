@@ -18,7 +18,8 @@ Imports:
     purrr (>= 0.3.4),
     tibble (>= 3.0.4),
     usethis (>= 1.9.0.9000),
-    numbers (>= 0.7.5)
+    numbers (>= 0.7.5),
+    rlang (>= 0.4.8)
 Suggests: 
     knitr,
     rmarkdown,

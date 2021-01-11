@@ -92,6 +92,7 @@ prime_factors <- function(n) {
 #' @param type 'odd' for the odd squares, 'even' for the even squares, 'all' for all squares
 #' @return the numbers
 get_squares <- function(n_max = 10, type = 'all') {
+  .x <- NULL
   predicate <- switch(
     type,
     'all' = expr(.x %% 2 >= 0),

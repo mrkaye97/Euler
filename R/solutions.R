@@ -57,20 +57,7 @@ problem_3 <- function() {
 #' @export
 problem_28 <- function() {
   N <- 1001
-  even_squares <- get_squares(N, type = 'even')
-  odd_squares <- get_squares(N, type = 'odd')
-
-  down_right <- even_squares - (2*(1:500) - 1)
-
-  up_left <- (
-    odd_squares %>%
-      discard(~.x == 1)
-  ) - 2*(1:500)
-
-  down_left <- even_squares %>%
-    map_dbl(~.x + 1)
-
-  sum(even_squares, up_left, down_right, down_left)
+  (N * (N * (4 * N + 3) + 8) - 9) / 6
 }
 
 
