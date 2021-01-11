@@ -82,5 +82,26 @@ prime_factors <- function(n) {
     keep(function(x) is_prime(x))
 }
 
+#' get_squares
+#'
+#' get squares (either even, odd, or all)
+#' @importFrom magrittr %>%
+#' @importFrom purrr map_dbl keep
+#' @importFrom rlang eval_tidy expr
+#' @param n_max the number of odd squares to get
+#' @param type 'odd' for the odd squares, 'even' for the even squares, 'all' for all squares
+#' @return the numbers
+get_squares <- function(n_max = 10, type = 'all') {
+  predicate <- switch(
+    type,
+    'all' = expr(.x %% 2 >= 0),
+    'odd' = expr(.x %% 2 != 0),
+    'even' = expr(.x %% 2 == 0),
+    stop("Type needs to be one of 'even', 'odd', or 'all'")
+  )
 
+  1:n_max %>%
+    keep(~ eval_tidy(predicate)) %>%
+    map_dbl(~ .x ** 2)
+}
 
