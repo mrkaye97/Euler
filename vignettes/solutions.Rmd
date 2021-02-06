@@ -33,6 +33,11 @@ problem_2()
 problem_3()
 ```
 
+## Problem 22
+```{r}
+problem_22()
+```
+
 ## Problem 28
 ```{r}
 problem_28()
