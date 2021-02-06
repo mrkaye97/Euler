@@ -39,6 +39,33 @@ problem_3 <- function() {
     pluck(max)
 }
 
+#' Problem 22
+#'
+#' Using names.txt (right click and 'Save Link/Target As...'), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.
+#' For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.
+#' What is the total of all the name scores in the file?
+#' @return the total name score
+#' @importFrom readr read_lines
+#' @importFrom magrittr %>%
+#' @importFrom purrr flatten map imap_dbl pluck
+#' @importFrom stringr str_extract_all str_split
+#' @export
+problem_22 <- function() {
+  all_names <- (
+    read_lines('https://projecteuler.net/project/resources/p022_names.txt') %>%
+      str_split(',')
+  ) %>%
+    pluck(1) %>%
+    sort()
+
+  all_names %>%
+    map(str_extract_all, "[A-Z]") %>%
+    flatten() %>%
+    map(get_word_values) %>%
+    imap_dbl(~ .y * .x) %>%
+    sum()
+}
+
 #' Problem 28
 #'
 #' Starting with the number 1 and moving to the right in a clockwise direction a 5 by 5 spiral is formed as follows:
@@ -59,32 +86,4 @@ problem_28 <- function() {
   N <- 1001
   (N * (N * (4 * N + 3) + 8) - 9) / 6
 }
-
-#' Problem 22
-#'
-#' Using names.txt (right click and 'Save Link/Target As...'), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.
-#' For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.
-#' What is the total of all the name scores in the file?
-#' @return the total name score
-#' @importFrom readr read_lines
-#' @importFrom magrittr %>%
-#' @importFrom purrr flatten map imap_dbl pluck
-#' @importFrom stringr str_extract_all str_split
-#' @export
-problem_28 <- function() {
-  all_names <- (
-    read_lines('https://projecteuler.net/project/resources/p022_names.txt') %>%
-      str_split(',')
-  ) %>%
-    pluck(1) %>%
-    sort()
-
-  all_names %>%
-    map(str_extract_all, "[A-Z]") %>%
-    flatten() %>%
-    map(get_word_values) %>%
-    imap_dbl(~ .y * .x) %>%
-    sum()
-}
-
 
