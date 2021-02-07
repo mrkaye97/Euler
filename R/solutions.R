@@ -87,3 +87,31 @@ problem_28 <- function() {
   (N * (N * (4 * N + 3) + 8) - 9) / 6
 }
 
+#' Problem 35
+#'
+#' The number, 197, is called a circular prime because all rotations of the digits: 197, 971, and 719, are themselves prime.
+#' There are thirteen such primes below 100: 2, 3, 5, 7, 11, 13, 17, 31, 37, 71, 73, 79, and 97.
+#' How many circular primes are there below one million?
+#' @return the number of circular primes
+#' @param workers the number of workers to use for parallel computing
+#' @importFrom purrr map_lgl
+#' @importFrom numbers Primes
+#' @importFrom future plan multisession
+#' @importFrom furrr future_map_lgl
+#' @export
+problem_35 <- function(workers = 8) {
+  primes_below_1m <- Primes(1000000)
+
+  plan(multisession, workers = workers)
+  results <- future_map_lgl(
+    primes_below_1m,
+    function(x) x %>%
+      get_all_circular_permutations() %>%
+      map_lgl(isPrime) %>%
+      all()
+    )
+
+  results %>%
+    sum()
+}
+

@@ -42,3 +42,8 @@ problem_22()
 ```{r}
 problem_28()
 ```
+
+## Problem 35
+```{r}
+problem_35()
+```

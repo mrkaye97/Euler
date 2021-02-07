@@ -156,5 +156,48 @@ get_word_values <- function(word) {
     sum()
 }
 
+#' @importFrom numbers isPrime
+#' @importFrom memoise memoize
+isPrimeMemo <- memoize(isPrime)
+
+#' get_digits
+#'
+#' get the digits of a number
+#' @param number the number to get permutations of
+#' @return the digits
+get_digits <- function(number) {
+  number %>%
+    as.character() %>%
+    str_split('') %>%
+    unlist() %>%
+    as.numeric()
+}
+
+#' get_number_digit_permutation
+#'
+#' get all circular variants of a number
+#' @param digits the digits of the number to permute
+#' @param n number of digits to move
+#' @return the number
+get_number_digit_permutation <- function(n, digits) {
+  N <- length(digits)
+  digit_indices <- (n + (1:N)) %% N + 1
+
+  digits[digit_indices] %>%
+    paste0(collapse = '') %>%
+    as.numeric()
+}
+
+#' get_all_circular_permutations
+#'
+#' get all of the circular permutations of a number
+#' @param number the number
+#' @importFrom purrr map_dbl
+get_all_circular_permutations <- function(number) {
+  digits <- get_digits(number)
+
+  1:length(digits) %>%
+    map_dbl(get_number_digit_permutation, digits)
+}
 
 
