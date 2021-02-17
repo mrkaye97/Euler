@@ -200,4 +200,37 @@ get_all_circular_permutations <- function(number) {
     map_dbl(get_number_digit_permutation, digits)
 }
 
+#' get_nth_triangle
+#'
+#' get the nth triangle number
+#' @param n the nth number
+#' @return the nth triangle number
+get_nth_triangle <- function(n) {
+  .5 * n * (n + 1)
+}
+
+#' get_triangle_numbers
+#'
+#' get all of the triangle numbers up to t(n)
+#' @param n the max n
+#' @importFrom purrr map_dbl
+get_triangle_numbers <- function(n) {
+  1:n %>%
+    map_dbl(get_nth_triangle)
+}
+
+#' triangle_greater_than_max
+#'
+#' test if a triangle number is greater than some specified maximum value
+#' @param n the number to test (i.e. the 10th triangle number)
+#' @param max_num the max to test against
+#' @return a boolean (true if the nth triangle number is bigger than the max to test)
+triangle_greater_than_max <- function(n, max_num) {
+  triangle <- get_nth_triangle(n)
+  if (triangle > max_num) {
+    TRUE
+  } else {
+    FALSE
+  }
+}
 
