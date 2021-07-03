@@ -330,7 +330,7 @@ next_railroad <- function(current_square) {
 #' Go to the next utility
 #'
 #' @param current_square the index of the current square
-#' @param return The square of the next utility
+#' @return The square of the next utility
 next_utility <- function(current_square) {
   current_square %>%
     when(

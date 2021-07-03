@@ -8,8 +8,9 @@ next_utility(current_square)
 }
 \arguments{
 \item{current_square}{the index of the current square}
-
-\item{return}{The square of the next utility}
+}
+\value{
+The square of the next utility
 }
 \description{
 Go to the next utility
