@@ -146,3 +146,45 @@ problem_42 <- function() {
     sum()
 }
 
+#' Problem 84
+#'
+#' @importFrom tibble enframe
+#' @param num_sims The number of simulations to run
+#' @param num_die_sides the number of sides of the monopoly dice
+#' @return the requested string
+#' @export
+problem_84 <- function(num_sims = 10000, num_die_sides = 4) {
+  state <- list()
+  chance <- init_chance()
+  cc <- init_community_chest()
+
+  state[[1]] <- list(
+    current_square = 0,
+    chance_deck = chance,
+    cc_deck = cc
+  )
+
+  for (turn in 2:num_sims) {
+    state[[turn]] <- play_turn(
+      current_square = state[[turn - 1]]$current_square,
+      chance_deck = state[[turn - 1]]$chance_deck,
+      cc_deck = state[[turn - 1]]$cc_deck,
+      num_die_sides = num_die_sides
+    )
+  }
+
+  state %>%
+    map(
+      pluck, "current_square"
+    ) %>%
+    unlist() %>%
+    table() %>%
+    prop.table() %>%
+    enframe(
+      name = "square",
+      value = "prop"
+    ) %>%
+    slice_max(prop, n = 3) %>%
+    pull(square) %>%
+    paste(collapse = "")
+}

@@ -234,3 +234,177 @@ triangle_greater_than_max <- function(n, max_num) {
   }
 }
 
+#' Roll a die
+#'
+#' @param sides the number of sides of the die
+#' @return the value of the die roll
+roll_die <- function(sides = 4) {
+  sample(1:sides, 1)
+}
+
+#' Monopoply Roll
+#'
+#' Rolling two dice
+#'
+#' @param sides the number of sides on the dice
+#' @return a numeric vector of the die rolls
+monopoly_roll <- function(sides = 4) {
+  roll_1 <- roll_die(sides)
+  roll_2 <- roll_die(sides)
+
+  c(
+    roll_1,
+    roll_2
+  )
+}
+
+#' Initialize community chest deck
+#' @return a character vector of randomly shuffled community chest cards
+init_community_chest <- function() {
+  deck <- c(
+    "Go to jail",
+    "Advance to go"
+  )
+
+
+  deck <- c(
+    deck,
+    rep("Nothing", 14)
+  )
+
+  sample(deck, size = length(deck))
+}
+
+#' Initialize chance deck
+#' @return a character vector of randomly shuffled chance cards
+init_chance <- function() {
+  deck <- c(
+    "Advance to go",
+    "Go to jail",
+    "Go to C1",
+    "Go to E3",
+    "Go to H2",
+    "Go to R1",
+    "Go to next R",
+    "Go to next R",
+    "Go to next U",
+    "Go back 3 squares"
+  )
+
+  deck <- c(
+    deck,
+    rep("Nothing", 6)
+  )
+
+  sample(deck, size = length(deck))
+}
+
+#' Draw a card from chance or community chest
+#' @param deck the deck to draw from
+#' @return A list with the drawn card and the new deck
+draw_card <- function(deck) {
+  list(
+    draw = deck[1],
+    new_deck = c(deck[2:length(deck)], deck[1])
+  )
+}
+
+
+
+#' Go to the next railroad
+#'
+#' @importFrom purrr when
+#' @param current_square the index of the current square
+#' @return The square of the next railroad
+next_railroad <- function(current_square) {
+  current_square %>%
+    when(
+      . < 5 ~ 5,
+      . < 15 ~ 15,
+      . < 25 ~ 25,
+      . < 35 ~ 35,
+      TRUE ~ 5
+    )
+}
+
+#' Go to the next utility
+#'
+#' @param current_square the index of the current square
+#' @param return The square of the next utility
+next_utility <- function(current_square) {
+  current_square %>%
+    when(
+      . < 12 ~ 12,
+      . < 28 ~ 28,
+      TRUE ~ 12
+    )
+}
+
+play_turn <- function(current_square, cc_deck, chance_deck, num_rolls = 1, num_die_sides = 4) {
+
+  roll <- monopoly_roll(sides = num_die_sides)
+  doubles <- length(unique(roll)) == 1
+
+  if (doubles & num_rolls == 3) {
+    new_square <- 10
+  } else {
+    new_square <- (current_square + sum(roll)) %% 40
+
+    if (new_square == 30) {
+      new_square <- 10
+    } else {
+
+      if (new_square %in% chance_squares) {
+        draw <- draw_card(chance_deck)
+        chance_deck <- draw$new_deck
+
+        new_square <- draw %>%
+          pluck("draw") %>%
+          switch(
+            "Go to H2" = 39,
+            "Go to R1" = 5,
+            "Go to next R" = next_railroad(new_square),
+            "Go to E3" = 24,
+            "Go to jail" = 10,
+            "Go to C1" = 11,
+            "Go to next U" = next_utility(new_square),
+            "Go back 3 squares" = new_square - 3,
+            "Advance to go" = 0,
+            new_square
+          )
+      }
+
+      if (new_square %in% cc_squares) {
+        draw <- draw_card(cc_deck)
+        cc_deck <- draw$new_deck
+
+        new_square <- draw %>%
+          pluck("draw") %>%
+          switch(
+            "Go to jail" = 10,
+            "Advance to go" = 0,
+            new_square
+          )
+      }
+
+      if (doubles) {
+        tmp <- play_turn(
+          current_square = new_square,
+          cc_deck = cc_deck,
+          chance_deck = chance_deck,
+          num_rolls = num_rolls + 1
+        )
+
+        new_square <- tmp$current_square
+        chance_deck <- tmp$chance_deck
+        cc_deck <- tmp$cc_deck
+      }
+    }
+  }
+
+  list(
+    current_square = new_square,
+    chance_deck = chance_deck,
+    cc_deck = cc_deck
+  )
+}
