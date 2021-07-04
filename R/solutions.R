@@ -200,7 +200,7 @@ problem_84_roughly_exact <- function() {
 
   sorted_colnames <- as.character(0:39)
 
-  P <- 1:40 %>%
+  P <- 0:39 %>%
     map(
       ~ rerun(
         500,
