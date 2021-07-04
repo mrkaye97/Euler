@@ -52,3 +52,16 @@ problem_35()
 ```{r}
 problem_42()
 ```
+
+## Problem 84
+```{r}
+problem_84()
+```
+
+## Problem 84
+
+A not quite working attempt at an exact solution:
+
+```{r}
+problem_84_roughly_exact()
+```

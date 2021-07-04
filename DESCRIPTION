@@ -24,7 +24,9 @@ Imports:
     stringr (>= 1.4.0),
     memoise (>= 2.0.0),
     future (>= 1.21.0),
-    furrr (>= 0.2.2)
+    furrr (>= 0.2.2),
+    MASS,
+    tidyr
 Suggests: 
     knitr,
     rmarkdown,

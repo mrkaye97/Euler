@@ -184,7 +184,71 @@ problem_84 <- function(num_sims = 10000, num_die_sides = 4) {
       name = "square",
       value = "prop"
     ) %>%
-    slice_max(prop, n = 3) %>%
-    pull(square) %>%
+    slice_max(.data$prop, n = 3) %>%
+    pull(.data$square) %>%
+    paste(collapse = "")
+}
+
+#' A solution to 84 by approximating the transition matrix and directly solving from it
+#'
+#' @importFrom MASS ginv
+#' @importFrom purrr map rerun
+#' @importFrom tidyr pivot_wider replace_na
+#' @return the three most common squares
+#' @export
+problem_84_roughly_exact <- function() {
+
+  sorted_colnames <- as.character(0:39)
+
+  P <- 1:40 %>%
+    map(
+      ~ rerun(
+        500,
+        play_turn(
+          .x,
+          cc_deck = init_community_chest(),
+          chance_deck = init_chance(),
+          num_die_sides = 6
+        )
+      ) %>%
+        map(
+         ~ .x %>%
+           pluck("current_square")
+        )
+    ) %>%
+    map(
+      ~ .x %>%
+        unlist() %>%
+        table() %>%
+        prop.table() %>%
+        enframe() %>%
+        pivot_wider(
+          names_from = name,
+          values_from = value
+        )
+    ) %>%
+    bind_rows() %>%
+    mutate(
+      across(everything(), ~ .x %>% as.numeric() %>% replace_na(0))
+    ) %>%
+    mutate(
+      `30` = 0
+    ) %>%
+    select(all_of(sorted_colnames)) %>%
+    as.matrix()
+
+  eigs <- eigen(P)
+
+  right_eig_vecs <- eigs$vectors
+  left_eig_vecs <- ginv(right_eig_vecs)
+
+  pi_eig <- Re(left_eig_vecs[1,] / sum(left_eig_vecs[1,]))
+
+  tibble(
+    square = 0:39,
+    prob = pi_eig
+  ) %>%
+    slice_max(.data$prob, n = 3) %>%
+    pull(.data$square) %>%
     paste(collapse = "")
 }
