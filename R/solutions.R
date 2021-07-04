@@ -207,8 +207,7 @@ problem_84_roughly_exact <- function() {
         play_turn(
           .x,
           cc_deck = init_community_chest(),
-          chance_deck = init_chance(),
-          num_die_sides = 6
+          chance_deck = init_chance()
         )
       ) %>%
         map(
